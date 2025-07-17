@@ -11,6 +11,25 @@
 - **Complete resource cleanup** when removing instances
 - **IP-restricted security** (only your IP can access)
 
+## 🌐 Before You Start - Get Your Public IP
+
+**You'll need your current public IP address for security configuration:**
+
+```bash
+# Method 1: Using curl (sometimes returns hex format)
+curl ifconfig.me
+
+# Method 2: Using a different service  
+curl ipinfo.io/ip
+
+# Method 3: Check via web browser
+# Visit: https://whatsmyip.com or https://ipinfo.io
+```
+
+**Note:** If `curl ifconfig.me` returns a hex value instead of normal IP format (like `200.5.49.46`), use one of the other methods or the web browser option.
+
+**Important:** Only this IP address will be able to SSH to your instance for security.
+
 ## ⚡ Why This Works (Lessons Learned)
 
 **❌ What Crashes Instances:**
