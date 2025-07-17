@@ -115,13 +115,95 @@ curl ifconfig.me
 - Systemd service for auto-start
 - Survives reboots, auto-restarts
 
-## 🔒 Security Features
+## 🔒 VS Code Tunnel Security
 
-- ✅ **SSH access only from your IP** - automatically configured
-- ✅ **No public services** except SSH on port 22
-- ✅ **Key-based authentication** - no passwords
-- ✅ **Automatic security group cleanup** - no orphaned resources
-- ✅ **Encrypted tunnel access** - authenticated via Microsoft/GitHub
+**⚠️ Important:** Anyone with your tunnel URL can attempt to connect. Here's how to keep it secure:
+
+### **🛡️ Built-in Protection:**
+- **Microsoft/GitHub authentication required** - anonymous users can't access
+- **Account-based access control** - only authenticated users can connect
+- **Encrypted tunnel connection** - all traffic is secured end-to-end
+
+### **⚠️ Security Considerations:**
+- **Anyone with the URL** can attempt to connect
+- **Shared/compromised accounts** could access your environment
+- **No IP restrictions** on the tunnel URL itself (bypasses EC2 security groups)
+- **URL acts like a password** - treat it as sensitive information
+
+### **🔐 How to Secure Your Tunnel:**
+
+**1. Use Strong Authentication:**
+```bash
+# Use dedicated account for development
+# - Create separate GitHub account for coding projects
+# - Use strong, unique password + 2FA
+# - Don't share account credentials
+```
+
+**2. Monitor Access:**
+```bash
+# Check tunnel connection logs
+ssh your-instance "sudo journalctl -u vscode-tunnel.service | grep -i 'connect\|auth'"
+
+# Monitor active connections
+ssh your-instance "sudo netstat -an | grep ESTABLISHED"
+
+# In VS Code: View → Command Palette → "Remote-Tunnels: Show Log"
+```
+
+**3. Rotate Tunnel URLs:**
+```bash
+# Get new tunnel URL by restarting service
+ssh your-instance "sudo systemctl restart vscode-tunnel.service"
+
+# Or using management script
+./setup_tunnel_service.sh your-instance --restart
+./setup_tunnel_service.sh your-instance --url
+```
+
+**4. Instance-Level Security:**
+```bash
+# Your EC2 instance is IP-restricted for SSH
+# But tunnel traffic goes through Microsoft's servers
+# Additional monitoring recommended:
+./monitor_instance.sh your-instance
+```
+
+### **🚨 Security Best Practices:**
+
+- ✅ **Never share tunnel URLs** in git repos, chat, or public forums
+- ✅ **Use dedicated GitHub/Microsoft account** for development only
+- ✅ **Enable 2FA** on your authentication account
+- ✅ **Monitor tunnel logs** for unexpected connections
+- ✅ **Restart tunnel periodically** to invalidate old URLs
+- ✅ **Keep sensitive data secure** (use env vars for API keys)
+- ✅ **Don't store credentials** in plain text files
+- ✅ **Use private/incognito browser** for tunnel access
+
+### **🔍 Security Monitoring:**
+
+```bash
+# Monitor for unusual activity
+./monitor_instance.sh your-instance logs
+
+# Check who's accessing your files
+ssh your-instance "sudo auditctl -w /home/ubuntu -p rwxa"
+
+# Monitor system resources for unexpected usage
+ssh your-instance "htop"
+```
+
+### **🛡️ If Security is Critical:**
+
+**Consider these alternatives for maximum security:**
+- **Local VS Code with SSH** (despite Remote-SSH stability issues)
+- **VPN to your instance** instead of public tunnels
+- **Bastion host setup** with additional network security layers
+- **Private tunnel services** (more complex but more secure)
+
+**Remember: Treat your tunnel URL like a password - never share it publicly!** 🔐
+
+---
 
 ## **Simple Architecture:**
 ```
