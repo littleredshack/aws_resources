@@ -1,7 +1,8 @@
 # EC2 + VS Code Remote Setup (Tested & Working)
 
-** NOTE: I have given up on using AWS EC2 instances with VS Code. I find they timeout after 4 hours. Then it is impossible to get back into the server even after multiple restarts.
-*** Too much pain (15 hours) so I am now using Azure. Check my other repo: https://github.com/littleredshack/azure_resources
+# NOTE: I have given up on using AWS EC2 instances with VS Code. I find they timeout after 4 hours. Then it is impossible to get back into the server even after multiple restarts. 
+
+Too much pain (15 hours) so I am now using Azure. Check my other repo: https://github.com/littleredshack/azure_resources
 
 ## 🚀 What This Provides
 
